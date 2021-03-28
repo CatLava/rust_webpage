@@ -9,6 +9,8 @@ use super::{QueryString, QueryStringValue};
 
 // we are adding lifetimes to this struct, the pub struct
 // this case the buffer is assigned a lifetime value '
+// adding a debug attribute
+#[derive(Debug)]
 pub struct Request<'buf> {
     path: &'buf str,
     // We can make query string optional on requests

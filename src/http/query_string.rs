@@ -4,6 +4,7 @@ use std::collections::HashMap;
 // example a=1&b=2&c=3&d=&e&f===&d=abc
 // there are multiple examples to handle, how to put these into
 //  for this we can create an enum, this will help handle all the use cases
+#[derive(Debug)]
 pub struct QueryString<'buf> {
     data: HashMap<&'buf str, Value<'buf>>
 }
@@ -12,6 +13,7 @@ pub struct QueryString<'buf> {
 // Have to specify array length at compile time
 // If unknown, will need to put this on the heap
 // heap allocated dynamic array is a vec
+#[derive(Debug)]
 pub enum Value<'buf> {
     Single(&'buf str),
     Multiple(Vec<&'buf str>),
