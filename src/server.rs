@@ -1,6 +1,6 @@
 use std::net::TcpListener;
-use std::io::Read;
-use crate::http::Request;
+use std::io::{Read, Write};
+use crate::http::{Request, Response, StatusCode};
 use std::convert::TryFrom;
 use std::convert::TryInto;
 
@@ -28,10 +28,10 @@ impl Server {
             match listener.accept() {
                 Ok((mut stream, _)) => {
                     println!("OK");
-                    // setting buffer limit for incoming data streams 
+                    // setting buffer limit for incoming data streams
                     let mut buffer = [0; 1024];
                     // Need to include Read as trait in library include
-                    match stream.read(&mut buffer){
+                    match stream.read(&mut buffer) {
                         Ok(_) => {
                             println!("Received a request: {}", String::from_utf8_lossy(&buffer));
 
@@ -40,7 +40,19 @@ impl Server {
                             // coded in the REquest portion of this class
 
                             match Request::try_from(&buffer as &[u8]) {
-                                Ok(request) => {},
+                                Ok(request) => {
+                                    dbg!(request);
+                                    // writing response back to browser
+                                    // we want to dynamically respond to requests
+                                    let response = Response::new(
+                                        StatusCode::Ok,
+                                        Some("<h1> it works! </h1>".to_string()),
+                                        response.send(&mut, stream);
+                                    );
+
+                                    // write!(stream, "{}", response);
+                                    // removed above bc implemented in request
+                                },
                                 Err(e) => println!("Failed to parse request!"),
                             }
 
